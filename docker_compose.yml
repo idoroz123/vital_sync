@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  vital_sync_app:
+    build:
+        context: .
+    ports:
+      - "9090:9090"
+    environment:
+      - DB_URL=postgresql://postgres:postgres@vital_sync_db:5432/postgres
+    depends_on:
+      - vital_sync_db
+  vital_sync_db:
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres

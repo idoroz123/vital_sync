@@ -9,7 +9,7 @@ class UsersApiTest(ServerTestBase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.create_id, cls.retrieved_id, cls.login_id = cls.initialize_db()
+        cls.create_id, cls.retrieved_id = cls.initialize_db()
 
     @classmethod
     def initialize_db(cls):

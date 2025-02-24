@@ -30,3 +30,7 @@ class ValidationError(BaseAPIException):
 
 class UserAlreadyExistsError(BaseAPIException):
     pass
+
+
+class DatabaseError(BaseAPIException):
+    pass

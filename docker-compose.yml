@@ -3,7 +3,8 @@ version: "3.9"
 services:
   vital_sync_app:
     build:
-        context: .
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "9090:9090"
     environment:

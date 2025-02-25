@@ -1,14 +1,14 @@
 from flask import Blueprint, request, jsonify
 from sqlalchemy.exc import SQLAlchemyError
 from db import db
-from schemas.users import UserCreate, UserUpdate
+from schemas.users import UserCreate, UserResponse, UserUpdate
 from api.exceptions import (
     UserNotFoundError,
     ValidationError,
     UserAlreadyExistsError,
     DatabaseError,
 )
-from models.users import Users  # Import the Users model
+from models.users import Users
 
 user_api = Blueprint("user_api", __name__)
 
@@ -53,7 +53,6 @@ def create_user():
     try:
         data = request.get_json()
         user = validate_user_data(data, user_type="create")
-        print(user.email)
         check_user_exists_by_email(user.email)
 
         new_user = Users(
@@ -67,10 +66,16 @@ def create_user():
 
         db.session.add(new_user)
         commit_to_db()
+        db.session.refresh(new_user)  # Ensure the new_user object gets its ID
+
+        user_response = UserResponse.model_validate(new_user)
 
         return (
             jsonify(
-                {"message": "User created successfully", "user": user.model_dump()}
+                {
+                    "message": "User created successfully",
+                    "user": user_response.model_dump(),
+                }
             ),
             201,
         )
@@ -90,7 +95,8 @@ def create_user():
 def get_user(user_id):
     try:
         user = get_user_by_id(user_id)
-        return jsonify({"user": user.to_dict()}), 200
+        user_response = UserResponse.model_validate(user)
+        return jsonify({"user": user_response.model_dump()}), 200
 
     except UserNotFoundError as e:
         return jsonify({"error": str(e)}), 404
@@ -114,8 +120,15 @@ def update_user(user_id):
 
         commit_to_db()
 
+        user_response = UserResponse.model_validate(user)
+
         return (
-            jsonify({"message": "User updated successfully", "user": user.to_dict()}),
+            jsonify(
+                {
+                    "message": "User updated successfully",
+                    "user": user_response.model_dump(),
+                }
+            ),
             200,
         )
 

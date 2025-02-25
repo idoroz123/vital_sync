@@ -3,7 +3,7 @@ from app import app
 from db import db
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def test_client():
     app.config["SQLALCHEMY_DATABASE_URI"] = (
         "postgresql://user:password@localhost:5432/postgres_test"

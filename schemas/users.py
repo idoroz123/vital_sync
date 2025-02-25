@@ -24,7 +24,7 @@ class UserResponse(UserBase):
 
 class UserUpdate(BaseModel):
     name: Optional[str] = Field(None, max_length=50)
-    email: Optional[EmailStr] = None  # Defaulting to None for optional fields
+    email: Optional[EmailStr] = None
     age: Optional[int] = Field(None, ge=18, le=120)
     gender: Optional[str] = Field(None, max_length=10)
     height: Optional[condecimal(max_digits=5, decimal_places=2)] = None

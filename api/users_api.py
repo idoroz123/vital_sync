@@ -13,7 +13,6 @@ from models.users import Users
 user_api = Blueprint("user_api", __name__)
 
 
-# Helper function to validate user input
 def validate_user_data(data, user_type="create"):
     try:
         if user_type == "create":
@@ -24,7 +23,6 @@ def validate_user_data(data, user_type="create"):
         raise ValidationError(f"Validation error: {e}")
 
 
-# Helper function to get user by ID
 def get_user_by_id(user_id):
     user = db.session.query(Users).filter_by(id=user_id).first()
     if user is None:
@@ -115,7 +113,7 @@ def update_user(user_id):
 
         user = get_user_by_id(user_id)
 
-        for key, value in user_update.dict(exclude_unset=True).items():
+        for key, value in user_update.model_dump(exclude_unset=True).items():
             setattr(user, key, value)
 
         commit_to_db()

@@ -1,7 +1,6 @@
-# user_api.py
-
 from flask import Blueprint, request, jsonify
 from sqlalchemy.exc import SQLAlchemyError
+from db import db
 from schemas.users import UserCreate, UserUpdate
 from api.exceptions import (
     UserNotFoundError,
@@ -9,7 +8,6 @@ from api.exceptions import (
     UserAlreadyExistsError,
     DatabaseError,
 )
-from app import db
 from models.users import Users  # Import the Users model
 
 user_api = Blueprint("user_api", __name__)
@@ -55,6 +53,7 @@ def create_user():
     try:
         data = request.get_json()
         user = validate_user_data(data, user_type="create")
+        print(user.email)
         check_user_exists_by_email(user.email)
 
         new_user = Users(
@@ -70,7 +69,9 @@ def create_user():
         commit_to_db()
 
         return (
-            jsonify({"message": "User created successfully", "user": user.dict()}),
+            jsonify(
+                {"message": "User created successfully", "user": user.model_dump()}
+            ),
             201,
         )
 

@@ -6,6 +6,8 @@ RUN mkdir app
 #set working directory to app folder
 WORKDIR /app
 
+ENV PYTHONPATH=/app
+
 #copy and install requirements.txt
 COPY requirements.txt .
 RUN pip install -r requirements.txt

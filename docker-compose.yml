@@ -9,6 +9,7 @@ services:
       - "9090:9090"
     environment:
       - DB_URL=postgresql://postgres:postgres@vital_sync_db:5432/postgres
+      - PYTHONPATH=/app
     depends_on:
       - vital_sync_db
   vital_sync_db:

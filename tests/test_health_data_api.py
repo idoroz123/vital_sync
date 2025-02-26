@@ -107,7 +107,7 @@ def test_delete_health_data(test_client, category):
 def test_invalid_category(test_client):
     """Test passing an invalid category."""
     response = test_client.post(
-        "/api/health-data", json={"category": "invalid", "user_id": 1}
+        "/api/health-data", json={"category": "invalid", "user_id": 2}
     )
     assert response.status_code == 400
     assert "Invalid category" in response.json["error"]

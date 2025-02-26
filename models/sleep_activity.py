@@ -8,7 +8,7 @@ class SleepActivity(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     total_sleep_duration = db.Column(db.Numeric(4, 2), nullable=False)
-    sleep_quality = db.Column(db.String(50), nullable=False)
+    sleep_quality = db.Column(db.String(50), nullable=True)
     deep_sleep_duration = db.Column(db.Numeric(4, 2), nullable=False)
     wake_up_count = db.Column(db.Integer, nullable=False, default=0)
     recorded_at = db.Column(db.Date, nullable=False)

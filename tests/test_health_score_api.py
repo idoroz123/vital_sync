@@ -45,7 +45,6 @@ HEALTH_DATA_PAYLOADS = {
 def create_user(test_client):
     """Fixture to create a user with id 1 for testing."""
     user = Users(
-        id=1,
         name="Test User",
         email="testuser@example.com",
         age=30,

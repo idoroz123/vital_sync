@@ -50,8 +50,6 @@ def create_user(test_client):
     db.session.add(user)
     db.session.commit()
     yield user
-    db.session.delete(user)
-    db.session.commit()
 
 
 @pytest.mark.parametrize("category", ["sleep", "physical", "blood_tests"])

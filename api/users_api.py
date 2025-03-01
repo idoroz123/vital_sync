@@ -30,13 +30,11 @@ def get_user_by_id(user_id):
     return user
 
 
-# Helper function to check if user already exists by email
 def check_user_exists_by_email(email):
     if db.session.query(Users).filter_by(email=email).first():
         raise UserAlreadyExistsError("A user with this email already exists.")
 
 
-# Helper function for committing changes to DB
 def commit_to_db():
     try:
         db.session.commit()
@@ -45,7 +43,6 @@ def commit_to_db():
         raise Exception("A database error occurred")
 
 
-# Create User
 @user_api.route("/users", methods=["POST"])
 def create_user():
     try:
@@ -88,7 +85,6 @@ def create_user():
         return jsonify({"error": str(e)}), 400
 
 
-# Read User
 @user_api.route("/users/<int:user_id>", methods=["GET"])
 def get_user(user_id):
     try:
@@ -104,7 +100,6 @@ def get_user(user_id):
         return jsonify({"error": str(e)}), 400
 
 
-# Update User
 @user_api.route("/users/<int:user_id>", methods=["PUT"])
 def update_user(user_id):
     try:

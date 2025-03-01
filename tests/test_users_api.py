@@ -19,7 +19,7 @@ def generate_test_email():
 # Sample user data with placeholder for email
 USER_DATA_TEMPLATE = {
     "name": "John Doe",
-    "email": "",  # Placeholder to be filled dynamically
+    "email": "",
     "age": 30,
     "gender": "male",
     "height": 175,

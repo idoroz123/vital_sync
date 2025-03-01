@@ -5,6 +5,7 @@ from db import db
 
 @pytest.fixture(scope="module")
 def test_client():
+    """Creates a test client and sets up the test database (once per module)."""
     app.config["SQLALCHEMY_DATABASE_URI"] = (
         "postgresql://user:password@localhost:5432/postgres_test"
     )
@@ -13,26 +14,18 @@ def test_client():
     with app.app_context():
         db.drop_all()
         db.create_all()
-        yield app.test_client()
+        yield app.test_client()  # Provide the test client
 
         db.session.remove()
-        db.drop_all()
+        db.drop_all()  # Cleanup after all tests in the module
 
 
 @pytest.fixture(scope="function")
 def db_fixture():
-    # Set the app to use an in-memory SQLite database for testing
-    app.config["SQLALCHEMY_DATABASE_URI"] = (
-        "postgresql://user:password@localhost:5432/postgres_test"
-    )
-    app.config["TESTING"] = True
-
-    # Create a database context and bind it to the app
+    """Ensures each test starts with a clean database state."""
     with app.app_context():
-        # Create all tables before each test
-        db.create_all()
+        db.session.begin_nested()  # Use nested transactions for rollback
 
-        yield db  # This will allow access to the db instance in your tests
+        yield db  # Provide the db instance
 
-        db.session.remove()  # Cleanup the session
-        db.drop_all()  # Drop all tables after the test
+        db.session.rollback()  # Rollback any changes made in the test

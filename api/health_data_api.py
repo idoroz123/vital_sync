@@ -4,7 +4,7 @@ from db import db
 from models.sleep_activity import SleepActivity
 from models.physical_activity import PhysicalActivity
 from models.blood_tests import BloodTests
-from api.exceptions import ValidationError, DatabaseError, UserNotFoundError
+from api.exceptions import ValidationError, UserNotFoundError
 from schemas.blood_tests import BloodTestCreate, BloodTestUpdate, BloodTestResponse
 from schemas.sleep_activity import (
     SleepActivityCreate,
@@ -52,7 +52,7 @@ def create_health_data():
         user_id = data.get("user_id")
         model, create_schema, _, response_schema = get_model_and_schemas(category)
 
-        validated_data = create_schema(**data)  # Validate with Pydantic
+        validated_data = create_schema(**data)
 
         new_entry = model(user_id=user_id, **validated_data.model_dump())
         db.session.add(new_entry)

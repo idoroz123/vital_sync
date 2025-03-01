@@ -43,7 +43,6 @@ HEALTH_DATA_PAYLOADS = {
 
 @pytest.fixture(scope="module")
 def create_user(test_client):
-    """Fixture to create a user with id 1 for testing."""
     user = Users(
         id=1,
         name="Test User",
@@ -69,10 +68,9 @@ def system_averages():
 
 
 def test_get_health_score_with_data(test_client, create_user, system_averages):
-    """Test health score calculation with data and system averages."""
-    _ = test_client.post("/api/health-data", json=HEALTH_DATA_PAYLOADS["sleep"])
     _ = test_client.post("/api/health-data", json=HEALTH_DATA_PAYLOADS["sleep"])
     _ = test_client.post("/api/health-data", json=HEALTH_DATA_PAYLOADS["physical"])
+    _ = test_client.post("/api/health-data", json=HEALTH_DATA_PAYLOADS["blood_tests"])
     response = test_client.get("api/get_health_score/1")
 
     assert response.status_code == 200
@@ -91,10 +89,9 @@ def test_get_health_score_user_doesnt_exist(test_client):
 
 
 def test_health_score_format(test_client, create_user, system_averages):
-    """Test the response format for health score calculation."""
-    _ = test_client.post("/api/health-data", json=HEALTH_DATA_PAYLOADS["sleep"])
     _ = test_client.post("/api/health-data", json=HEALTH_DATA_PAYLOADS["sleep"])
     _ = test_client.post("/api/health-data", json=HEALTH_DATA_PAYLOADS["physical"])
+    _ = test_client.post("/api/health-data", json=HEALTH_DATA_PAYLOADS["blood_tests"])
     response = test_client.get("/api/get_health_score/1")
 
     assert response.status_code == 200

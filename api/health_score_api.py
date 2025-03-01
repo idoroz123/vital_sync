@@ -22,7 +22,6 @@ def get_health_score(user_id):
     if not (user_sleep or user_physical or user_blood_tests):
         raise UserNotFoundError(f"No health data found for user {user_id}")
 
-    # Fetch system averages (or use default logic if not available)
     system_averages = (
         db.session.query(SystemAverages).order_by(SystemAverages.id.desc()).first()
     )
@@ -35,7 +34,6 @@ def get_health_score(user_id):
         avg_steps = db.session.query(func.avg(PhysicalActivity.steps)).scalar() or 0
         avg_glucose = db.session.query(func.avg(BloodTests.glucose_level)).scalar() or 0
     else:
-        # Use system averages if available
         avg_sleep = system_averages.avg_sleep_duration
         avg_steps = system_averages.avg_steps
         avg_glucose = system_averages.avg_glucose_level
